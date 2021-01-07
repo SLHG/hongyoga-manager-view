@@ -71,6 +71,11 @@
                     },
                     {
                         icon: 'el-icon-lx-cascades',
+                        index: 'classType',
+                        title: '课程类型管理'
+                    },
+                    {
+                        icon: 'el-icon-lx-cascades',
                         index: 'classInfo',
                         title: '课程管理'
                     },

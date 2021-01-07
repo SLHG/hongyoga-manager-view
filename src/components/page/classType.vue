@@ -3,13 +3,13 @@
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
-                    <i class="el-icon-lx-cascades"></i> 课程管理
+                    <i class="el-icon-lx-cascades"></i> 课程类型管理
                 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-input v-model="query.className" placeholder="课程名称" class="handle-input mr10"></el-input>
+                <el-input v-model="query.classTypeName" placeholder="类型名称" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
                 <el-button type="primary" icon="el-icon-plus" @click="insertEdit">新增</el-button>
             </div>
@@ -19,18 +19,10 @@
                     class="table"
                     ref="multipleTable"
                     header-cell-class-name="table-header">
-                <el-table-column prop="classId" label="ID" width="55" align="center"></el-table-column>
-                <el-table-column prop="className" label="课程名称"></el-table-column>
-                <el-table-column prop="classType" label="课程类型"></el-table-column>
-                <el-table-column prop="classFeatures" label="课程特色"></el-table-column>
+                <el-table-column prop="typeId" label="ID" width="55" align="center"></el-table-column>
+                <el-table-column prop="classTypeName" label="课程名称"></el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
-                        <el-button
-                                type="text"
-                                icon="el-icon-view"
-                                @click="viewData(scope.$index, scope.row)"
-                        >查看
-                        </el-button>
                         <el-button
                                 type="text"
                                 icon="el-icon-edit"
@@ -58,21 +50,12 @@
                 ></el-pagination>
             </div>
         </div>
-
         <!-- 编辑弹出框 -->
         <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
             <el-form ref="form" :model="form" label-width="70px">
-                <el-form-item label="课程名称">
-                    <el-input v-model="form.className"></el-input>
+                <el-form-item label="课程类型名称">
+                    <el-input v-model="form.classTypeName"></el-input>
                 </el-form-item>
-                <el-form-item label="课程类型">
-                    <el-input v-model="form.classType"></el-input>
-                </el-form-item>
-                <el-form-item label="课程特色">
-                    <el-input v-model="form.classFeatures"></el-input>
-                </el-form-item>
-                <quill-editor ref="myTextEditor" v-model="form.classIntroduction"
-                              :options="editorOption"></quill-editor>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="cancelEdit">取 消</el-button>
@@ -97,7 +80,7 @@
                 query: {
                     start: 1,
                     limit: 10,
-                    className: '',
+                    classTypeName: '',
                 },
                 tableData: [],
                 multipleSelection: [],
@@ -108,10 +91,7 @@
                 pageTotal: 0,
                 form: {},
                 idx: -1,
-                id: -1,
-                editorOption: {
-                    placeholder: '请输入简介'
-                }
+                id: -1
             };
         },
         components: {
@@ -140,7 +120,7 @@
                     type: 'warning'
                 })
                     .then(() => {
-                        deleteClassInfo(row.classId).then(res => {
+                        deleteClassInfo(row.typeId).then(res => {
                             if (res.rtnCode === "0") {
                                 this.$message.success(res.rtnMsg);
                                 this.$set(this.query, 'start', 1);
@@ -161,12 +141,6 @@
                 this.saveVisible = true;
                 this.insertVisible = false;
             },
-            //查看详情
-            viewData(index, row) {
-                this.idx = index;
-                this.form = row;
-                this.editVisible = true;
-            },
             //取消操作
             cancelEdit() {
                 this.editVisible = false;
@@ -182,8 +156,8 @@
             },
             //插入数据
             insertData() {
-                if (this.form.className === undefined || this.form.className === '') {
-                    this.$message.warning('课程名称为空!');
+                if (this.form.classTypeName === undefined || this.form.classTypeName === '') {
+                    this.$message.warning('名称为空!');
                 } else {
                     insertClassInfo(this.form).then(res => {
                         if (res.rtnCode === "0") {
@@ -199,8 +173,8 @@
             },
             //保存编辑
             saveEdit() {
-                if (this.form.className === undefined || this.form.className === '') {
-                    this.$message.warning('课程名称为空!');
+                if (this.form.classTypeName === undefined || this.form.classTypeName === '') {
+                    this.$message.warning('名称为空!');
                 } else {
                     updateClassInfo(this.form).then(res => {
                         this.cancelEdit();

@@ -30,8 +30,13 @@ export default new Router({
                     meta: {title: '基础表格'}
                 },
                 {
+                    path: '/classType',
+                    component: () => import('../components/page/classType.vue'),
+                    meta: {title: '课程类型管理'}
+                },
+                {
                     path: '/classInfo',
-                    component: () => import(/* webpackChunkName: "table" */ '../components/page/classInfo.vue'),
+                    component: () => import('../components/page/classInfo.vue'),
                     meta: {title: '课程管理'}
                 },
                 {
