@@ -23,3 +23,10 @@ export const updateClassType = update => {
     return request.post('/class/updateClassType', update);
 };
 
+export const getAllClassTypeList = () => {
+    return request({
+        url: '/class/getAllClassTypeList',
+        method: 'get'
+    });
+};
+

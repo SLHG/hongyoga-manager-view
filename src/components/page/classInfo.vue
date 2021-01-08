@@ -21,7 +21,7 @@
                     header-cell-class-name="table-header">
                 <el-table-column prop="classId" label="ID" width="55" align="center"></el-table-column>
                 <el-table-column prop="className" label="课程名称"></el-table-column>
-                <el-table-column prop="classType" label="课程类型"></el-table-column>
+                <el-table-column prop="classTypeName" label="课程类型"></el-table-column>
                 <el-table-column prop="classFeatures" label="课程特色"></el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
@@ -66,7 +66,11 @@
                     <el-input v-model="form.className"></el-input>
                 </el-form-item>
                 <el-form-item label="课程类型">
-                    <el-input v-model="form.classType"></el-input>
+                    <el-select v-model="form.classType" placeholder="请选择">
+                        <el-option v-for="classType in classTypeList"
+                                   :value="classType.typeId" :key="classType.typeId"
+                                   :label="classType.classTypeName"></el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="课程特色">
                     <el-input v-model="form.classFeatures"></el-input>
@@ -89,6 +93,7 @@
     import 'quill/dist/quill.bubble.css';
     import {quillEditor} from "vue-quill-editor";
     import {deleteClassInfo, getClassInfoList, insertClassInfo, updateClassInfo} from "../../api/classInfo";
+    import {getAllClassTypeList} from "../../api/classtype";
 
     export default {
         name: 'baseTable',
@@ -111,7 +116,8 @@
                 id: -1,
                 editorOption: {
                     placeholder: '请输入简介'
-                }
+                },
+                classTypeList: []
             };
         },
         components: {
@@ -127,6 +133,15 @@
                     this.query.limit = res.result.pageSize;
                     this.pageTotal = res.result.total;
                 });
+            },
+            getClassTypeList() {
+                getAllClassTypeList().then(res => {
+                    if (res.rtnCode === "0") {
+                        this.classTypeList = res.result;
+                    } else {
+                        this.$message.warning(res.rtnMsg);
+                    }
+                })
             },
             //按名称搜索
             handleSearch() {
@@ -155,6 +170,7 @@
             },
             //编辑操作
             handleEdit(index, row) {
+                this.getClassTypeList();
                 this.idx = index;
                 this.form = row;
                 this.editVisible = true;
@@ -175,6 +191,7 @@
             },
             //新增操作
             insertEdit() {
+                this.getClassTypeList();
                 this.form = {};
                 this.saveVisible = false;
                 this.editVisible = true;

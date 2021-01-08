@@ -20,7 +20,7 @@
                     ref="multipleTable"
                     header-cell-class-name="table-header">
                 <el-table-column prop="typeId" label="ID" width="55" align="center"></el-table-column>
-                <el-table-column prop="classTypeName" label="课程名称"></el-table-column>
+                <el-table-column prop="classTypeName" label="类型名称"></el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button
@@ -67,11 +67,7 @@
 </template>
 
 <script>
-    import 'quill/dist/quill.core.css';
-    import 'quill/dist/quill.snow.css';
-    import 'quill/dist/quill.bubble.css';
-    import {quillEditor} from "vue-quill-editor";
-    import {deleteClassInfo, getClassInfoList, insertClassInfo, updateClassInfo} from "../../api/classInfo";
+    import {deleteClassType, getClassTypeList, insertClassType, updateClassType} from "../../api/classtype";
 
     export default {
         name: 'baseTable',
@@ -94,15 +90,12 @@
                 id: -1
             };
         },
-        components: {
-            quillEditor
-        },
         created() {
             this.getData();
         },
         methods: {
             getData(params) {
-                getClassInfoList(params).then(res => {
+                getClassTypeList(params).then(res => {
                     this.tableData = res.result.list;
                     this.query.limit = res.result.pageSize;
                     this.pageTotal = res.result.total;
@@ -120,7 +113,7 @@
                     type: 'warning'
                 })
                     .then(() => {
-                        deleteClassInfo(row.typeId).then(res => {
+                        deleteClassType(row.typeId).then(res => {
                             if (res.rtnCode === "0") {
                                 this.$message.success(res.rtnMsg);
                                 this.$set(this.query, 'start', 1);
@@ -159,7 +152,7 @@
                 if (this.form.classTypeName === undefined || this.form.classTypeName === '') {
                     this.$message.warning('名称为空!');
                 } else {
-                    insertClassInfo(this.form).then(res => {
+                    insertClassType(this.form).then(res => {
                         if (res.rtnCode === "0") {
                             this.cancelEdit();
                             this.$message.success(res.rtnMsg);
@@ -176,7 +169,7 @@
                 if (this.form.classTypeName === undefined || this.form.classTypeName === '') {
                     this.$message.warning('名称为空!');
                 } else {
-                    updateClassInfo(this.form).then(res => {
+                    updateClassType(this.form).then(res => {
                         this.cancelEdit();
                         if (res.rtnCode === "0") {
                             this.$message.success(res.rtnMsg);
