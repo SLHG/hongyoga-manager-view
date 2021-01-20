@@ -201,6 +201,8 @@
             insertData() {
                 if (this.form.className === undefined || this.form.className === '') {
                     this.$message.warning('课程名称为空!');
+                } else if (this.form.classType === undefined || this.form.classType === '') {
+                    this.$message.warning('课程类型为空!');
                 } else {
                     insertClassInfo(this.form).then(res => {
                         if (res.rtnCode === "0") {
