@@ -153,20 +153,18 @@
                 //二次确认删除
                 this.$confirm('确定要删除吗？', '提示', {
                     type: 'warning'
-                })
-                    .then(() => {
-                        deleteClassInfo(row.classId).then(res => {
-                            if (res.rtnCode === "0") {
-                                this.$message.success(res.rtnMsg);
-                                this.$set(this.query, 'start', 1);
-                                this.getData();
-                            } else {
-                                this.$message.warning(res.rtnMsg);
-                            }
-                        });
-                    })
-                    .catch(() => {
+                }).then(() => {
+                    deleteClassInfo(row.classId).then(res => {
+                        if (res.rtnCode === "0") {
+                            this.$message.success(res.rtnMsg);
+                            this.$set(this.query, 'start', 1);
+                            this.getData();
+                        } else {
+                            this.$message.warning(res.rtnMsg);
+                        }
                     });
+                }).catch(() => {
+                });
             },
             //编辑操作
             handleEdit(index, row) {

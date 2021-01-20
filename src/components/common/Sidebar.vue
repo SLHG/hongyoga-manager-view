@@ -77,7 +77,7 @@
                     {
                         icon: 'el-icon-lx-cascades',
                         index: 'classInfo',
-                        title: '课程管理'
+                        title: '课程信息管理'
                     },
                     {
                         icon: 'el-icon-lx-cascades',
